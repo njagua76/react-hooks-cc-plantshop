@@ -8,22 +8,25 @@ function NewPlantForm({ onAddPlant }) {
   });
 
   function handleChange(e) {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   }
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    const newPlant = {
-      id: Date.now(),
-      name: formData.name,
-      image: formData.image || "https://via.placeholder.com/400",
-      price: parseFloat(formData.price) || 0,
-      soldOut: false,
-    };
-
-    onAddPlant(newPlant);
-    setFormData({ name: "", image: "", price: "" });
+    fetch("http://localhost:6001/plants", {
+      method: "POST",
+      headers: { "Content-Type": "Application/JSON" },
+      body: JSON.stringify(formData),
+    })
+      .then((r) => r.json())
+      .then((newPlant) => {
+        onAddPlant(newPlant);
+        setFormData({ name: "", image: "", price: "" });
+      });
   }
 
   return (
@@ -46,8 +49,8 @@ function NewPlantForm({ onAddPlant }) {
         />
         <input
           type="number"
-          name="price"
           step="0.01"
+          name="price"
           placeholder="Price"
           value={formData.price}
           onChange={handleChange}
