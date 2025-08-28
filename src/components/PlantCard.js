@@ -7,10 +7,10 @@ function PlantCard({ plant, onToggleSoldOut }) {
     <li className="card" data-testid="plant-item">
       <img src={image} alt={name} />
       <h4>{name}</h4>
-      <p>Price: ${price}</p>
+      <p>Price: {price}</p>
       {soldOut ? (
         <button className="primary" onClick={() => onToggleSoldOut(id)}>
-          Sold Out
+          Out of Stock
         </button>
       ) : (
         <button onClick={() => onToggleSoldOut(id)}>In Stock</button>
